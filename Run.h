@@ -1,18 +1,8 @@
 #pragma once
-#include "MyString.h"
-#include "CriteriaPartialFunction.hpp"
-#include "Factory.h"
-#include "ReadFromFile.h"
+#include "ParticialFunction.h"
 
-class Run
-{
-	MyString fileName;
+	void run(const char* fileName);
+	void funcByValues(const ParticialFunction* funct);
+	void allValues(const ParticialFunction* funct);
 
-public:
-	Run(const MyString& fileName) :fileName(fileName) {};
-	void runProgram()const;
-	void FuncInRange()const;
-	void NextVal()const;
-	
-};
 

@@ -1,14 +1,9 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-class Pair
-{
-public:
-	bool isDefined = false;
-	int value = 0;
+#include <cstdint>
 
-public:
-	Pair(bool isDef, int value);
-	friend std::ostream& operator<<(std::ostream& os, const Pair& other);
+struct Pair
+{
+	bool isDefined = false;
+	int32_t res = 0;
 };
 

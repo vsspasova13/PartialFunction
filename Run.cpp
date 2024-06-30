@@ -1,61 +1,57 @@
 #include "Run.h"
-#include <iostream>
+#include "ParticialFunctionsFactory.h"
 
-void Run::runProgram() const
+void run(const char* fileName)
 {
-	int n;
-	std::cout << "Choose mode: 1-FunctionInRange 2-NextValue 3-Exit" << std::endl;
+	ParticialFunction* function = ParticialFunctionsFactory::create(fileName);
+	uint16_t n;
+	std::cout << "Choose mode:" << std::endl;
+	std::cout << "1-print chosen values in [a;b]" << std::endl;
+	std::cout << "2-print all defined values" << std::endl;
 	std::cin >> n;
+
 	switch (n)
 	{
 	case 1:
-		FuncInRange();
+		funcByValues(function);
 		break;
 	case 2:
-		NextVal();
+		allValues(function);
 		break;
-	case 3:
-		return;
+	default:
+		std::cout << "Error." << std::endl;
 		break;
 	}
 }
 
-void Run::FuncInRange() const
+void funcByValues(const ParticialFunction* funct)
 {
-	int a, b;
-	std::cout << "Enter a:";
-	std::cin >> a;
-	std::cout << "Enter b:";
-	std::cin >> b;
-	std::cout << std::endl;
+	std::cout << "Type a and b:"<<std::endl;
+	uint16_t a, b;
+	std::cin >> a >> b;
 	if (a > b)
-		throw std::invalid_argument("A trqbva da e po-malko ot B");
-	ReadFromFile h(fileName);
-	PartialFunction* ptr(h.handleCase());
-	for (int i = a; i < b; i++)
 	{
-		if (!ptr->isDefinedAt(i))continue;
-		std::cout << "f(" << i << ")=" << ptr->compute(i);
+		throw std::invalid_argument("Error.");
 	}
+
+	for (size_t i = a; i < b; i++)
+	{
+		if (funct->isDefined(i)); {
+			std::cout << "f(" << i << ")= " << (*funct)(i) << std::endl;
+		}
+	}
+
 }
 
-void Run::NextVal() const
+void allValues(const ParticialFunction* funct)
 {
-	std::cout << "Enter start value:";
-	int n;
-	std::cin >> n;
-	char ch;
-	ReadFromFile h(fileName);
-	PartialFunction* ptr(h.handleCase());
-	int i = n;
-	do
+	std::cin.ignore();
+	std::cout << "Press enter to output one defined value:";
+	for (size_t i = INT32_MIN; i < INT32_MAX; i++)
 	{
-		while (!ptr->isDefinedAt(++i)) 
-		{}
-			std::cout << "f(" << i << ")=" << ptr->compute(i);
-			std::cout << "Do you want next value(Y-yes, N-no):";
-			std::cin >> ch;
-		
-	} while (ch == 'Y');
-	return;
+		if (funct->isDefined(i)) {
+			std::cin.ignore();
+			std::cout << "f(" << i << ")= " << (*funct)(i) << std::endl;
+		}
+	}
 }
